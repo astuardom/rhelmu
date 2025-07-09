@@ -46,7 +46,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/pacientes")
+    fetch("const API_URL = process.env.REACT_APP_API_URL;/api/pacientes")
       .then(res => res.json())
       .then(data => {
         setPacientes(data);
@@ -55,19 +55,19 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/citas')
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/citas')
       .then(res => res.json())
       .then(data => setCitas(data));
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/recetas')
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recetas')
       .then(res => res.json())
       .then(data => setRecetas(data));
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/presupuestos')
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos')
       .then(res => res.json())
       .then(data => setPresupuestos(data))
       .catch(err => console.error("❌ Error al cargar presupuestos:", err));
