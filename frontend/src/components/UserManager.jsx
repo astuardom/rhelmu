@@ -6,7 +6,7 @@ const UserManager = () => {
   const [formData, setFormData] = useState({ nombre: '', correo: '', clave: '', rol: 'asistente' });
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/usuarios')
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/usuarios')
       .then(res => res.json())
       .then(data => setUsuarios(data))
       .catch(err => console.error('Error al cargar usuarios', err));
@@ -19,7 +19,7 @@ const UserManager = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/usuarios', {
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/usuarios', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
@@ -34,7 +34,7 @@ const UserManager = () => {
 
   const handleDelete = (id) => {
     if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
-    fetch(`http://localhost:5000/api/usuarios/${id}`, { method: 'DELETE' })
+    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/usuarios/${id}`, { method: 'DELETE' })
       .then(() => setUsuarios(prev => prev.filter(u => u._id !== id)))
       .catch(err => console.error('Error al eliminar usuario', err));
   };

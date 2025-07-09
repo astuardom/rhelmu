@@ -5,7 +5,7 @@ const PatientActions = ({ patient, onDelete, onEdit }) => {
     if (!window.confirm(`¿Eliminar al paciente ${patient.nombre}?`)) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/pacientes/${patient._id}`, {
+      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}`, {
         method: "DELETE"
       });
       if (res.ok) {

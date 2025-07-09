@@ -54,7 +54,7 @@ const RecipeEditor = ({ patient, onSaveRecipe }) => {
   };
 
   const handleGuardar = () => {
-    fetch('http://localhost:5000/api/recetas', {
+    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recetas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(recipe)

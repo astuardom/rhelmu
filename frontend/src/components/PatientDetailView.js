@@ -26,7 +26,7 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
 
   const handleEliminar = () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este paciente?")) {
-      fetch(`http://localhost:5000/api/pacientes/${patient._id}`, {
+      fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}`, {
         method: 'DELETE'
       })
         .then(res => {
@@ -44,7 +44,7 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
   };
 
   const handleHistorialSave = async (updatedHistorial) => {
-    const res = await fetch(`http://localhost:5000/api/pacientes/${patient._id}`, {
+    const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...patient, historial: updatedHistorial })
@@ -56,7 +56,7 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
 
   const handleControlUpdate = async (updatedControles) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pacientes/${patient._id}/controles`, {
+      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}/controles`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ controles: updatedControles })
@@ -71,7 +71,7 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
 
   const handleOdontogramaUpdate = async (updatedOdontograma) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pacientes/${patient._id}/odontograma`, {
+      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}/odontograma`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ odontograma: updatedOdontograma })
@@ -86,7 +86,7 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
 
   const handleFichaOrtodonciaUpdate = async (updatedFicha) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pacientes/${patient._id}/ficha-ortodoncia`, {
+      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}/ficha-ortodoncia`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fichaOrtodoncia: updatedFicha })

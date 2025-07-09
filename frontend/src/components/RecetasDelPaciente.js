@@ -7,7 +7,7 @@ const RecetasDelPaciente = ({ paciente, recargar }) => {
 
   useEffect(() => {
     if (!paciente?._id) return;
-    fetch(`http://localhost:5000/api/recetas/paciente/${paciente._id}`)
+    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recetas/paciente/${paciente._id}`)
       .then(res => res.json())
       .then(data => setRecetas(data))
       .catch(() => alert('❌ Error al cargar recetas'));

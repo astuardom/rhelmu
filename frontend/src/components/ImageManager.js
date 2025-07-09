@@ -12,7 +12,7 @@ const ImageManager = ({ patientId }) => {
 
   useEffect(() => {
     if (!patientId) return;
-    fetch(`http://localhost:5000/api/imagenes/paciente/${patientId}`)
+    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/paciente/${patientId}`)
       .then(res => res.json())
       .then(data => setImages(data))
       .catch(() => alert("Error al cargar imágenes clínicas"));
@@ -32,7 +32,7 @@ const ImageManager = ({ patientId }) => {
       formData.append('notas', '');
 
       try {
-        const res = await fetch('http://localhost:5000/api/imagenes', {
+        const res = await fetch('const API_URL = process.env.REACT_APP_API_URL;/api/imagenes', {
           method: 'POST',
           body: formData
         });
@@ -56,7 +56,7 @@ const ImageManager = ({ patientId }) => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`http://localhost:5000/api/imagenes/${deletingImageId}`, { method: 'DELETE' });
+      await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/${deletingImageId}`, { method: 'DELETE' });
       setImages(prev => prev.filter(img => img._id !== deletingImageId));
       setDeletingImageId(null);
     } catch (err) {
@@ -76,7 +76,7 @@ const ImageManager = ({ patientId }) => {
 
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/imagenes/${editingImage._id}`, {
+      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/${editingImage._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editData)
@@ -145,7 +145,7 @@ const ImageManager = ({ patientId }) => {
           {filteredImages.map(img => (
             <div key={img._id} className="border rounded-lg overflow-hidden shadow-sm">
               <img 
-                src={`http://localhost:5000${img.url}`} 
+                src={`const API_URL = process.env.REACT_APP_API_URL;${img.url}`} 
                 alt={`Imagen clínica ${img.tipo}`}
                 className="w-full h-48 object-cover cursor-pointer"
                 onClick={() => setSelectedImage(img)}
@@ -174,7 +174,7 @@ const ImageManager = ({ patientId }) => {
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-4 max-w-3xl w-full relative">
             <button onClick={() => setSelectedImage(null)} className="absolute top-2 right-2 text-white bg-red-600 px-3 py-1 rounded">X</button>
-            <img src={`http://localhost:5000${selectedImage.url}`} alt="Vista ampliada" className="w-full object-contain rounded" />
+            <img src={`const API_URL = process.env.REACT_APP_API_URL;${selectedImage.url}`} alt="Vista ampliada" className="w-full object-contain rounded" />
             <div className="mt-4">
               <p className="text-lg font-semibold">{selectedImage.tipo}</p>
               <p className="text-sm text-gray-600">{new Date(selectedImage.fecha).toLocaleDateString()}</p>

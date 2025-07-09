@@ -10,7 +10,7 @@ const RemindersManager = ({ patient }) => {
 
   useEffect(() => {
     if (!patient?._id) return;
-    fetch(`http://localhost:5000/api/recordatorios/${patient._id}`)
+    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${patient._id}`)
       .then(res => res.json())
       .then(data => setReminders(data))
       .catch(err => {
@@ -37,7 +37,7 @@ const RemindersManager = ({ patient }) => {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/recordatorios', {
+      const res = await fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reminder)
@@ -60,7 +60,7 @@ const RemindersManager = ({ patient }) => {
 
   const toggleComplete = async (reminder) => {
     try {
-      const updated = await fetch(`http://localhost:5000/api/recordatorios/${reminder._id}`, {
+      const updated = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${reminder._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ completed: !reminder.completed })
@@ -75,7 +75,7 @@ const RemindersManager = ({ patient }) => {
 
   const deleteReminder = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/recordatorios/${id}`, {
+      await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${id}`, {
         method: 'DELETE'
       });
       setReminders(prev => prev.filter(r => r._id !== id));

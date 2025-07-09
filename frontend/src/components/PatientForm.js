@@ -85,8 +85,8 @@ const PatientForm = ({ onSave, onCancel, patient }) => {
     }
 
     const url = patient?._id
-      ? `http://localhost:5000/api/pacientes/${patient._id}`
-      : "http://localhost:5000/api/pacientes";
+      ? `const API_URL = process.env.REACT_APP_API_URL;/api/pacientes/${patient._id}`
+      : "const API_URL = process.env.REACT_APP_API_URL;/api/pacientes";
     const method = patient?._id ? "PUT" : "POST";
 
     const res = await fetch(url, {

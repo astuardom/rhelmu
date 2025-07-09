@@ -9,7 +9,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
   const handleConfirmarPresupuesto = (budget) => {
     const paciente = budget.paciente;
 
-    fetch("http://localhost:5000/api/pacientes", {
+    fetch("const API_URL = process.env.REACT_APP_API_URL;/api/pacientes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -22,7 +22,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
     })
       .then(res => res.json())
       .then(() => {
-        fetch(`http://localhost:5000/api/presupuestos/${budget._id}`, {
+        fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos/${budget._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...budget, estado: 'confirmado', confirmado: true })
@@ -122,7 +122,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
           initialPatient={selectedBudget?.paciente}
           budgetToEdit={selectedBudget}
           onAddBudget={(presupuesto) => {
-            fetch("http://localhost:5000/api/presupuestos", {
+            fetch("const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(presupuesto)
@@ -135,7 +135,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
               });
           }}
           onUpdateBudget={(presupuesto) => {
-            fetch(`http://localhost:5000/api/presupuestos/${presupuesto._id}`, {
+            fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos/${presupuesto._id}`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(presupuesto)
