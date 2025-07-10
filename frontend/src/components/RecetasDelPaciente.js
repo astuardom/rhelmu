@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import CertificadoCompleto from './CertificadoCompleto';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const RecetasDelPaciente = ({ paciente, recargar }) => {
   const [recetas, setRecetas] = useState([]);
   const [recetaSeleccionada, setRecetaSeleccionada] = useState(null);
 
   useEffect(() => {
     if (!paciente?._id) return;
-    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recetas/paciente/${paciente._id}`)
-      .then(res => res.json())
+
+    fetch(`${API_URL}/api/recetas/paciente/${paciente._id}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Error al cargar recetas');
+        return res.json();
+      })
       .then(data => setRecetas(data))
       .catch(() => alert('❌ Error al cargar recetas'));
   }, [paciente, recargar]);
