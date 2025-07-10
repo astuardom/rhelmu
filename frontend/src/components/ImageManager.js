@@ -13,11 +13,11 @@ const ImageManager = ({ patientId }) => {
 
   useEffect(() => {
     if (!patientId) return;
-    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/paciente/${patientId}`)
+    fetch(`${API_URL}/api/imagenes/paciente/${patientId}`)
       .then(res => res.json())
       .then(data => setImages(data))
       .catch(() => alert("Error al cargar imágenes clínicas"));
-  }, [patientId]);
+  }, [patientId, API_URL]);
 
   const handleImageUpload = async (e) => {
     const files = e.target.files;
@@ -33,7 +33,7 @@ const ImageManager = ({ patientId }) => {
       formData.append('notas', '');
 
       try {
-        const res = await fetch(`${API_URL}/imagenes`, {
+        const res = await fetch(`${API_URL}/api/imagenes`, {
           method: 'POST',
           body: formData
         });
@@ -57,7 +57,7 @@ const ImageManager = ({ patientId }) => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/${deletingImageId}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/api/imagenes/${deletingImageId}`, { method: 'DELETE' });
       setImages(prev => prev.filter(img => img._id !== deletingImageId));
       setDeletingImageId(null);
     } catch (err) {
@@ -77,7 +77,7 @@ const ImageManager = ({ patientId }) => {
 
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/imagenes/${editingImage._id}`, {
+      const res = await fetch(`${API_URL}/api/imagenes/${editingImage._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editData)
@@ -94,7 +94,7 @@ const ImageManager = ({ patientId }) => {
     const coincideTipo = filterTipo ? img.tipo === filterTipo : true;
     const coincideNotas = searchNotas ? img.notas.toLowerCase().includes(searchNotas.toLowerCase()) : true;
     return coincideTipo && coincideNotas;
-  });
+  })
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">

@@ -1,6 +1,7 @@
-// ✅ BudgetView.js
 import React, { useState } from 'react';
 import BudgetEditor from './BudgetEditor';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
   const [selectedBudget, setSelectedBudget] = useState(null);
@@ -9,7 +10,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
   const handleConfirmarPresupuesto = (budget) => {
     const paciente = budget.paciente;
 
-    fetch("const API_URL = process.env.REACT_APP_API_URL;/api/pacientes", {
+    fetch(`${API_URL}/api/pacientes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -22,7 +23,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
     })
       .then(res => res.json())
       .then(() => {
-        fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos/${budget._id}`, {
+        fetch(`${API_URL}/api/presupuestos/${budget._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...budget, estado: 'confirmado', confirmado: true })
@@ -76,7 +77,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
               {presupuestos.map(budget => (
                 <tr key={budget._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {budget.paciente?.nombre} {budget.paciente?.apellido || ''}
+                    {budget.paciente?.nombre} {budget.paciente?.apellido || ''}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(budget.fecha).toLocaleDateString('es-ES')}
@@ -122,7 +123,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
           initialPatient={selectedBudget?.paciente}
           budgetToEdit={selectedBudget}
           onAddBudget={(presupuesto) => {
-            fetch("const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos", {
+            fetch(`${API_URL}/api/presupuestos`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(presupuesto)
@@ -135,7 +136,7 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
               });
           }}
           onUpdateBudget={(presupuesto) => {
-            fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos/${presupuesto._id}`, {
+            fetch(`${API_URL}/api/presupuestos/${presupuesto._id}`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(presupuesto)
@@ -143,12 +144,11 @@ const BudgetView = ({ presupuestos, setPresupuestos, pacientes }) => {
               .then(res => res.json())
               .then(data => {
                 setPresupuestos(prev => prev.map(p => p._id === data._id ? data : p));
-                setSelectedBudget(null); // 🔁 Limpia el presupuesto seleccionado
-                setShowBudgetEditor(false); // 🔁 Cierra el editor
+                setSelectedBudget(null);
+                setShowBudgetEditor(false);
                 alert("✅ Presupuesto actualizado correctamente");
               });
           }}
-          
         />
       )}
     </div>
