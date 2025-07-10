@@ -14,13 +14,10 @@ app.use(express.json());
 // Servir archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/clinica', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ Conectado a MongoDB'))
-.catch((err) => console.error('❌ Error de conexión:', err));
+// Conexión a MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ Conectado a MongoDB Atlas'))
+  .catch((err) => console.error('❌ Error de conexión:', err));
 
 // Rutas API
 app.use('/api/pacientes', require('./routes/pacientes'));
@@ -31,7 +28,6 @@ app.use('/api/citas', require('./routes/citas'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api', require('./routes/auth')); // 🔐 Login & Registro
 app.use('/api/presupuestos', require('./routes/presupuestos'));
-
 
 // Ruta de prueba
 app.get('/', (req, res) => {
