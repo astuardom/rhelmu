@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const RecipeEditor = ({ patient, onSaveRecipe }) => {
   const [recipe, setRecipe] = useState({
     id: Date.now(),
@@ -54,7 +56,7 @@ const RecipeEditor = ({ patient, onSaveRecipe }) => {
   };
 
   const handleGuardar = () => {
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recetas', {
+    fetch(`${API_URL}/recetas`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(recipe)
@@ -67,6 +69,7 @@ const RecipeEditor = ({ patient, onSaveRecipe }) => {
       })
       .catch(() => alert('❌ Error al guardar la receta'));
   };
+  
 
   return (
     <div>
