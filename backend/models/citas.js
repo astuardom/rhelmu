@@ -9,11 +9,11 @@ const citaSchema = new mongoose.Schema({
   hora: {
     type: String,
     required: [true, 'La hora es obligatoria'],
-    match: [/^\d{2}:\d{2}$/, 'Formato de hora inválido (HH:MM)']
+    match: [/^(?:[01]\d|2[0-3]):[0-5]\d$/, 'Formato de hora inválido (HH:MM en 24h)']
   },
   pacienteId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
+    ref: 'Paciente', // <-- Asegúrate de que coincide con tu modelo real
     required: [true, 'El paciente es obligatorio']
   },
   motivo: {

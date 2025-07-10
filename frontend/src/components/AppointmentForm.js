@@ -5,7 +5,8 @@ const AppointmentForm = ({ appointment, patients, onSave, onCancel }) => {
     fecha: '',
     hora: '09:00',
     pacienteId: '',
-    motivo: ''
+    motivo: '',
+    estado: 'pendiente'
   });
 
   const handleChange = (e) => {
@@ -37,12 +38,13 @@ const AppointmentForm = ({ appointment, patients, onSave, onCancel }) => {
             >
               <option value="">Seleccione un paciente</option>
               {patients.map(patient => (
-                <option key={patient.id} value={patient.id}>
+                <option key={patient._id} value={patient._id}>
                   {patient.nombre} ({patient.rut})
                 </option>
               ))}
             </select>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
@@ -69,6 +71,7 @@ const AppointmentForm = ({ appointment, patients, onSave, onCancel }) => {
               />
             </div>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Motivo</label>
             <input
@@ -81,7 +84,24 @@ const AppointmentForm = ({ appointment, patients, onSave, onCancel }) => {
               required
             />
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+            <select
+              name="estado"
+              value={formData.estado}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="completada">Completada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </div>
         </div>
+
         <div className="mt-6 flex justify-end space-x-3">
           <button
             type="button"
