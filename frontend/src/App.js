@@ -1,9 +1,3 @@
-// ✅ Mejora total del layout con las características que pediste:
-// - Mantiene diseño anterior (dashboard con cards, LayoutHeader)
-// - Integra mejoras visuales del nuevo diseño
-// - Añade menú lateral responsive con botón hamburguesa en móviles
-// - Mantiene funcionalidad de login, vistas, control por rol
-
 import React, { useState, useEffect } from 'react';
 import LayoutHeader from './components/LayoutHeader';
 import PatientList from './components/PatientList';
@@ -116,6 +110,39 @@ const App = () => {
   const isAdmin = user.rol === 'admin';
   const isAsistente = user.rol === 'asistente';
   const isDoctorOrContador = user.rol === 'doctor' || user.rol === 'contador';
+
+  const handleAddAppointment = async (nuevaCita) => {
+    try {
+      const res = await fetch(`${API_URL}/api/citas`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevaCita)
+      });
+      const data = await res.json();
+      setCitas(prev => [...prev, data]);
+      alert("✅ Cita creada correctamente");
+    } catch (err) {
+      console.error("❌ Error al crear cita:", err);
+      alert("Error al guardar la cita");
+    }
+  };
+  
+  const handleEditAppointment = async (citaEditada) => {
+    try {
+      const res = await fetch(`${API_URL}/api/citas/${citaEditada._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(citaEditada)
+      });
+      const data = await res.json();
+      setCitas(prev => prev.map(c => (c._id === data._id ? data : c)));
+      alert("✅ Cita actualizada correctamente");
+    } catch (err) {
+      console.error("❌ Error al actualizar cita:", err);
+      alert("Error al editar la cita");
+    }
+  };
+ 
 
   const renderSidebar = () => (
     <div className="space-y-2 text-sm">
@@ -252,9 +279,17 @@ const App = () => {
             </>
           )}
 
+
           {currentView === 'calendario' && (
-            <CalendarView citas={citas} pacientes={pacientes} readOnly={isAsistente} onAddAppointment={() => {}} onEditAppointment={() => {}} />
+            <CalendarView
+              citas={citas}
+              pacientes={pacientes}
+              readOnly={isAsistente}
+              onAddAppointment={handleAddAppointment}
+              onEditAppointment={handleEditAppointment}
+            />
           )}
+
           {currentView === 'presupuestos' && !isAsistente && <BudgetView presupuestos={presupuestos} setPresupuestos={setPresupuestos} pacientes={pacientes} />}
           {currentView === 'inventario' && !isAsistente && <InventoryManager />}
           {currentView === 'reportes' && <ReportsView />}

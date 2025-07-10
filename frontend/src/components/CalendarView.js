@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Colores por estado
 const estadoColors = {
   pendiente: 'bg-yellow-200 text-yellow-800',
