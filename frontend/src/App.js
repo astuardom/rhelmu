@@ -49,7 +49,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_URL}/pacientes`)
+    fetch(`${API_URL}/api/pacientes`)
       .then(res => res.json())
       .then(data => {
         setPacientes(data);
@@ -59,19 +59,19 @@ const App = () => {
   
 
   useEffect(() => {
-    fetch(`${API_URL}/citas`)
+    fetch(`${API_URL}/api/citas`)
       .then(res => res.json())
       .then(data => setCitas(data));
   }, []);
   
   useEffect(() => {
-    fetch(`${API_URL}/recetas`)
+    fetch(`${API_URL}/api/recetas`)
       .then(res => res.json())
       .then(data => setRecetas(data));
   }, []);
   
   useEffect(() => {
-    fetch(`${API_URL}/presupuestos`)
+    fetch(`${API_URL}/api/presupuestos`)
       .then(res => res.json())
       .then(data => setPresupuestos(data))
       .catch(err => console.error("❌ Error al cargar presupuestos:", err));
