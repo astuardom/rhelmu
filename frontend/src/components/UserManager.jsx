@@ -1,12 +1,14 @@
 // 📁 components/UserManager.jsx
 import React, { useState, useEffect } from 'react';
+const API_URL = process.env.REACT_APP_API_URL;
+
 
 const UserManager = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [formData, setFormData] = useState({ nombre: '', correo: '', clave: '', rol: 'asistente' });
 
   useEffect(() => {
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/usuarios')
+    fetch(`${API_URL}/usuarios`)
       .then(res => res.json())
       .then(data => setUsuarios(data))
       .catch(err => console.error('Error al cargar usuarios', err));
@@ -19,7 +21,7 @@ const UserManager = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/usuarios', {
+    fetch(`${API_URL}/usuarios`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

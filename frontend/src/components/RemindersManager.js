@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const RemindersManager = ({ patient }) => {
   const [reminders, setReminders] = useState([]);
@@ -37,18 +38,18 @@ const RemindersManager = ({ patient }) => {
     };
 
     try {
-      const res = await fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios', {
+      const res = await fetch(`${API_URL}/recordatorios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reminder)
       });
-
+    
       if (!res.ok) {
         const errorData = await res.json();
         console.error('Error al guardar:', errorData);
         return alert('❌ Error al guardar recordatorio');
       }
-
+    
       const data = await res.json();
       setReminders(prev => [...prev, data]);
       setNewReminder({ title: '', date: '', time: '' });
@@ -56,7 +57,7 @@ const RemindersManager = ({ patient }) => {
       console.error('Error en la solicitud:', err);
       alert('Error al guardar recordatorio');
     }
-  };
+  }
 
   const toggleComplete = async (reminder) => {
     try {
