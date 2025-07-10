@@ -8,7 +8,7 @@ const UserManager = () => {
   const [formData, setFormData] = useState({ nombre: '', correo: '', clave: '', rol: 'asistente' });
 
   useEffect(() => {
-    fetch(`${API_URL}/usuarios`)
+    fetch(`${API_URL}/api/usuarios`)
       .then(res => res.json())
       .then(data => setUsuarios(data))
       .catch(err => console.error('Error al cargar usuarios', err));
@@ -21,7 +21,7 @@ const UserManager = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${API_URL}/usuarios`, {
+    fetch(`${API_URL}/api/usuarios`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
