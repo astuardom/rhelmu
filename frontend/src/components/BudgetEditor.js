@@ -4,6 +4,8 @@ import TreatmentItemForm from './TreatmentItemForm';
 import TreatmentTable from './TreatmentTable';
 import BudgetSummary from './BudgetSummary';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const validarRut = (rut) => {
   if (!rut || rut.length < 8) return false;
   rut = rut.replace(/\./g, '').replace('-', '');
@@ -180,7 +182,7 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
     }
 
     try {
-      const res = await fetch("const API_URL = process.env.REACT_APP_API_URL;/api/pacientes", {
+      const res = await fetch(`${API_URL}/api/pacientes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
