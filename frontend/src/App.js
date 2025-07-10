@@ -19,6 +19,9 @@ import WeeklyAppointments from './components/WeeklyAppointments';
 import UserManager from './components/UserManager';
 import Login from './components/Login';
 
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const App = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -46,33 +49,34 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetch("const API_URL = process.env.REACT_APP_API_URL;/api/pacientes")
+    fetch(`${API_URL}/pacientes`)
       .then(res => res.json())
       .then(data => {
         setPacientes(data);
         if (data.length > 0) setSelectedPatient(data[0]);
       });
   }, []);
+  
 
   useEffect(() => {
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/citas')
+    fetch(`${API_URL}/citas`)
       .then(res => res.json())
       .then(data => setCitas(data));
   }, []);
-
+  
   useEffect(() => {
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/recetas')
+    fetch(`${API_URL}/recetas`)
       .then(res => res.json())
       .then(data => setRecetas(data));
   }, []);
-
+  
   useEffect(() => {
-    fetch('const API_URL = process.env.REACT_APP_API_URL;/api/presupuestos')
+    fetch(`${API_URL}/presupuestos`)
       .then(res => res.json())
       .then(data => setPresupuestos(data))
       .catch(err => console.error("❌ Error al cargar presupuestos:", err));
   }, []);
-
+  
   useEffect(() => {
     const editar = e => {
       setEditingPatient(e.detail);

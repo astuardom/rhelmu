@@ -9,6 +9,7 @@ const ImageManager = ({ patientId }) => {
   const [filterTipo, setFilterTipo] = useState('');
   const [searchNotas, setSearchNotas] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (!patientId) return;
@@ -32,7 +33,7 @@ const ImageManager = ({ patientId }) => {
       formData.append('notas', '');
 
       try {
-        const res = await fetch('const API_URL = process.env.REACT_APP_API_URL;/api/imagenes', {
+        const res = await fetch(`${API_URL}/imagenes`, {
           method: 'POST',
           body: formData
         });
