@@ -11,7 +11,7 @@ const RemindersManager = ({ patient }) => {
 
   useEffect(() => {
     if (!patient?._id) return;
-    fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${patient._id}`)
+    fetch(`${API_URL}/api/recordatorios/${patient._id}`)
       .then(res => res.json())
       .then(data => setReminders(data))
       .catch(err => {
@@ -38,18 +38,18 @@ const RemindersManager = ({ patient }) => {
     };
 
     try {
-      const res = await fetch(`${API_URL}/recordatorios`, {
+      const res = await fetch(`${API_URL}/api/recordatorios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reminder)
       });
-    
+
       if (!res.ok) {
         const errorData = await res.json();
         console.error('Error al guardar:', errorData);
         return alert('❌ Error al guardar recordatorio');
       }
-    
+
       const data = await res.json();
       setReminders(prev => [...prev, data]);
       setNewReminder({ title: '', date: '', time: '' });
@@ -57,11 +57,11 @@ const RemindersManager = ({ patient }) => {
       console.error('Error en la solicitud:', err);
       alert('Error al guardar recordatorio');
     }
-  }
+  };
 
   const toggleComplete = async (reminder) => {
     try {
-      const updated = await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${reminder._id}`, {
+      const updated = await fetch(`${API_URL}/api/recordatorios/${reminder._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ completed: !reminder.completed })
@@ -76,7 +76,7 @@ const RemindersManager = ({ patient }) => {
 
   const deleteReminder = async (id) => {
     try {
-      await fetch(`const API_URL = process.env.REACT_APP_API_URL;/api/recordatorios/${id}`, {
+      await fetch(`${API_URL}/api/recordatorios/${id}`, {
         method: 'DELETE'
       });
       setReminders(prev => prev.filter(r => r._id !== id));
