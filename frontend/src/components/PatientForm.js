@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Función para validar RUT chileno
 const validarRut = (rut) => {
   if (!rut || typeof rut !== 'string') return false;
@@ -85,17 +87,23 @@ const PatientForm = ({ onSave, onCancel, patient }) => {
     }
 
     const url = patient?._id
-    ? `${API_URL}/api/pacientes/${patient._id}`
-    : `${API_URL}/api/pacientes`;
-  const method = patient?._id ? "PUT" : "POST";
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
-    });
+      ? `${API_URL}/api/pacientes/${patient._id}`
+      : `${API_URL}/api/pacientes`;
+    const method = patient?._id ? "PUT" : "POST";
 
-    const data = await res.json();
-    onSave(data);
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+      onSave(data);
+    } catch (err) {
+      console.error("❌ Error al guardar paciente:", err);
+      alert("Error al guardar paciente");
+    }
   };
 
   return (
