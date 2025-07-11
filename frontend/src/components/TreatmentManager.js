@@ -24,10 +24,18 @@ const TreatmentManager = () => {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
-        const data = results.data.map(row => ({
-          nombre: row["TRATAMIENTO"],
-          precio: parseInt(row["PRECIO LISTA"].replace(/\$|\./g, '')) || 0
-        }));
+        const data = results.data
+          .map(row => {
+            const nombre = row["TRATAMIENTO"]?.toString().trim();
+            const rawPrecio = row["PRECIO LISTA"]?.toString().replace(/[^\d]/g, '');
+            if (!nombre || !rawPrecio) return null;
+            return {
+              nombre,
+              precio: parseInt(rawPrecio)
+            };
+          })
+          .filter(Boolean); // elimina nulos
+
         try {
           const res = await fetch(`${API_URL}/api/tratamientos/import`, {
             method: "POST",
@@ -35,9 +43,10 @@ const TreatmentManager = () => {
             body: JSON.stringify(data)
           });
           const result = await res.json();
-          alert(result.msg || "Datos importados");
+          alert(result.msg || "✅ Datos importados correctamente");
           setTratamientos(data);
         } catch (err) {
+          console.error("❌ Error subiendo tratamientos:", err);
           alert("❌ Error al subir tratamientos");
         }
       }
