@@ -83,7 +83,6 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
     }
   };
   
-  
 
   const handleOdontogramaUpdate = async (updatedOdontograma) => {
     try {
