@@ -43,8 +43,9 @@ const TreatmentManager = () => {
             body: JSON.stringify(data)
           });
           const result = await res.json();
-          alert(result.msg || "✅ Datos importados correctamente");
-          setTratamientos(data);
+          alert("✅ Datos importados correctamente");
+          setTratamientos(result); // ← ahora contiene los tratamientos reales desde backend
+
         } catch (err) {
           console.error("❌ Error subiendo tratamientos:", err);
           alert("❌ Error al subir tratamientos");

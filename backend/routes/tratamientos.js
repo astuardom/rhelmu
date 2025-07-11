@@ -14,10 +14,12 @@ router.post('/import', async (req, res) => {
   try {
     await Tratamiento.deleteMany(); // Limpiar si deseas reemplazar
     await Tratamiento.insertMany(tratamientos);
-    res.json({ ok: true, msg: 'Tratamientos cargados correctamente' });
+    const all = await Tratamiento.find(); // ← traer todos los tratamientos
+    res.json(all); // ← devolver todos al frontend
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
