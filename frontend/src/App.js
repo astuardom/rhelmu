@@ -143,10 +143,14 @@ const App = () => {
 
   const renderSidebar = () => (
     <div className="space-y-2 text-sm">
-      <button onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+      <button
+        onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }}
+        className="w-full text-left px-4 py-3 rounded-lg hover:bg-indigo-100 flex items-center space-x-3 transition duration-150"
+      >
         <span className="text-xl">📊</span>
-        <span className="hidden md:inline">Dashboard</span>
+        <span className="text-base text-indigo-700 font-medium">Dashboard</span>
       </button>
+
       {(isAdmin || isDoctorOrContador || isAsistente) && (
         <>
           <button onClick={() => { setCurrentView('pacientes'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
@@ -198,9 +202,24 @@ const App = () => {
 
       {/* Menú lateral móvil */}
       {showMobileMenu && (
-        <div className="fixed inset-0 bg-white z-50 p-6 shadow-lg">
-          <button onClick={() => setShowMobileMenu(false)} className="text-right w-full text-red-500 mb-4">✖ Cerrar</button>
-          {renderSidebar()}
+        <div className="fixed inset-0 bg-white z-50 p-6 shadow-lg overflow-y-auto">
+          <div className="flex justify-between items-center mb-6 border-b pb-2">
+            <div className="flex items-center space-x-2">
+              <img src="/logo-rhelmu.png" alt="Logo" className="h-10" />
+              <h2 className="text-indigo-700 font-bold text-lg">Menú Rhelmu</h2>
+            </div>
+            <button
+              onClick={() => setShowMobileMenu(false)}
+              className="text-red-500 text-sm font-semibold flex items-center space-x-1"
+            >
+              <span>✖</span> <span>Cerrar</span>
+            </button>
+          </div>
+
+          <nav className="space-y-3">
+            <div className="text-xs text-gray-400 uppercase tracking-wide">Navegación</div>
+            {renderSidebar()}
+          </nav>
         </div>
       )}
 
