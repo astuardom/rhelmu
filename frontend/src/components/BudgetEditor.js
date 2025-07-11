@@ -24,6 +24,7 @@ const validarRut = (rut) => {
 
   return dv === dvFinal;
 };
+/////////////////////////////////
 
 const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBudget, onUpdateBudget }) => {
   const guardarPresupuesto = onSaveBudget || onAddBudget;
@@ -72,7 +73,7 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
     }
   }, [budgetToEdit]);
   
-
+///////////////////////////////////
   const [newItem, setNewItem] = useState({
     tratamiento: '',
     cantidad: 1,
@@ -81,8 +82,15 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
   });
 
   const [guardado, setGuardado] = useState(false);
+  const [tratamientosDisponibles, setTratamientosDisponibles] = useState([]);
   const budgetRef = useRef();
   const rutValido = validarRut(localPatient.rut);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/tratamientos`)
+      .then(res => res.json())
+      .then(data => setTratamientosDisponibles(data));
+  }, []);
 
   const handleBudgetChange = (e) => {
     const { name, value } = e.target;
@@ -114,7 +122,7 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
 
     const itemWithSubtotal = {
       ...newItem,
-      subtotal: newItem.cantidad * newItem.precio
+      subtotal: newItem.cantidad * (newItem.precio - (newItem.descuento || 0))
     };
 
     setBudget(prev => ({
@@ -126,9 +134,12 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
       tratamiento: '',
       cantidad: 1,
       precio: 0,
+      descuento: 0,
       diente: ''
     });
   };
+
+  ////////////////////
 
   const removeItem = (index) => {
     setBudget(prev => ({
@@ -169,7 +180,6 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
     }
   };
   
-
   const handleConfirmar = async () => {
     if (!validarRut(localPatient.rut)) {
       alert("⚠️ El RUT ingresado no es válido.");
@@ -435,7 +445,12 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
         </div>
       </div>
 
-      <TreatmentItemForm newItem={newItem} onChange={handleItemChange} onAdd={addItem} />
+      <TreatmentItemForm
+        newItem={newItem}
+        onChange={handleItemChange}
+        onAdd={addItem}
+        tratamientosDisponibles={tratamientosDisponibles}
+      />
 
       {budget.items.length > 0 && (
         <TreatmentTable items={budget.items} onRemove={removeItem} />
