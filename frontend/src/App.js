@@ -12,6 +12,8 @@ import ReportsView from './components/ReportsView';
 import WeeklyAppointments from './components/WeeklyAppointments';
 import UserManager from './components/UserManager';
 import Login from './components/Login';
+import TreatmentManager from './components/TreatmentManager'; // nuevo módulo
+
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -292,7 +294,12 @@ const App = () => {
           {currentView === 'presupuestos' && !isAsistente && <BudgetView presupuestos={presupuestos} setPresupuestos={setPresupuestos} pacientes={pacientes} />}
           {currentView === 'inventario' && !isAsistente && <InventoryManager />}
           {currentView === 'reportes' && <ReportsView />}
-          {currentView === 'configuracion' && isAdmin && <UserManager />}
+          {currentView === 'configuracion' && isAdmin && (
+            <>
+              <UserManager />
+              <TreatmentManager />
+            </>
+          )}
           {currentView === 'asistente' && <AssistantView />}
         </div>
       </div>

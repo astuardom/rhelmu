@@ -39,3 +39,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT} ✅`);
 });
+
+app.use('/api/tratamientos', require('./routes/tratamientos'));
