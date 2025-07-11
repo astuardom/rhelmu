@@ -37,22 +37,20 @@ router.patch('/:id/odontograma', async (req, res) => {
   }
 });
 
+// PATCH /pacientes/:id/controles
 router.patch('/:id/controles', async (req, res) => {
   try {
     const { controles } = req.body;
 
-    // Validación de formato
     if (!Array.isArray(controles)) {
       return res.status(400).json({ error: 'Formato inválido: controles debe ser un arreglo' });
     }
 
-    // Buscar paciente
     const paciente = await Paciente.findById(req.params.id);
     if (!paciente) {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
 
-    // Asignar y guardar
     paciente.controles = controles;
     await paciente.save();
 
@@ -62,6 +60,7 @@ router.patch('/:id/controles', async (req, res) => {
     res.status(500).json({ error: 'Error interno al actualizar controles' });
   }
 });
+
 
 
 router.delete('/:id', async (req, res) => {
