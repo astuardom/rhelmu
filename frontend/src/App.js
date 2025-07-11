@@ -13,11 +13,7 @@ import WeeklyAppointments from './components/WeeklyAppointments';
 import UserManager from './components/UserManager';
 import Login from './components/Login';
 
-
 const API_URL = process.env.REACT_APP_API_URL;
-
-const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dashboard');
@@ -53,27 +49,26 @@ const App = () => {
         if (data.length > 0) setSelectedPatient(data[0]);
       });
   }, []);
-  
 
   useEffect(() => {
     fetch(`${API_URL}/api/citas`)
       .then(res => res.json())
       .then(data => setCitas(data));
   }, []);
-  
+
   useEffect(() => {
     fetch(`${API_URL}/api/recetas`)
       .then(res => res.json())
       .then(data => setRecetas(data));
   }, []);
-  
+
   useEffect(() => {
     fetch(`${API_URL}/api/presupuestos`)
       .then(res => res.json())
       .then(data => setPresupuestos(data))
       .catch(err => console.error("❌ Error al cargar presupuestos:", err));
   }, []);
-  
+
   useEffect(() => {
     const editar = e => {
       setEditingPatient(e.detail);
@@ -129,7 +124,7 @@ const App = () => {
       alert("Error al guardar la cita");
     }
   };
-  
+
   const handleEditAppointment = async (citaEditada) => {
     try {
       const res = await fetch(`${API_URL}/api/citas/${citaEditada._id}`, {
@@ -145,21 +140,20 @@ const App = () => {
       alert("Error al editar la cita");
     }
   };
- 
 
   const renderSidebar = () => (
     <div className="space-y-2 text-sm">
-      <button onClick={() => setCurrentView('dashboard')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+      <button onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
         <span className="text-xl">📊</span>
         <span className="hidden md:inline">Dashboard</span>
       </button>
       {(isAdmin || isDoctorOrContador || isAsistente) && (
         <>
-          <button onClick={() => setCurrentView('pacientes')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+          <button onClick={() => { setCurrentView('pacientes'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
             <span className="text-xl">🧑‍⚕️</span>
             <span className="hidden md:inline">Pacientes</span>
           </button>
-          <button onClick={() => setCurrentView('calendario')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+          <button onClick={() => { setCurrentView('calendario'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
             <span className="text-xl">📅</span>
             <span className="hidden md:inline">Calendario</span>
           </button>
@@ -167,22 +161,22 @@ const App = () => {
       )}
       {(isAdmin || isDoctorOrContador) && (
         <>
-          <button onClick={() => setCurrentView('presupuestos')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+          <button onClick={() => { setCurrentView('presupuestos'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
             <span className="text-xl">💰</span>
             <span className="hidden md:inline">Presupuestos</span>
           </button>
-          <button onClick={() => setCurrentView('inventario')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+          <button onClick={() => { setCurrentView('inventario'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
             <span className="text-xl">📦</span>
             <span className="hidden md:inline">Inventario</span>
           </button>
-          <button onClick={() => setCurrentView('reportes')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+          <button onClick={() => { setCurrentView('reportes'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
             <span className="text-xl">📈</span>
             <span className="hidden md:inline">Reportes</span>
           </button>
         </>
       )}
       {isAdmin && (
-        <button onClick={() => setCurrentView('configuracion')} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
+        <button onClick={() => { setCurrentView('configuracion'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
           <span className="text-xl">⚙️</span>
           <span className="hidden md:inline">Configuración</span>
         </button>
@@ -196,7 +190,11 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-indigo-50">
-      <LayoutHeader nombreUsuario={user.nombre} onLogout={logout} onMenuClick={() => setShowMobileMenu(!showMobileMenu)} />
+      <LayoutHeader
+        nombreUsuario={user.nombre}
+        onLogout={logout}
+        onToggleMenu={() => setShowMobileMenu(!showMobileMenu)}
+      />
 
       {/* Menú lateral móvil */}
       {showMobileMenu && (
@@ -216,7 +214,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Contenido */}
+        {/* Contenido principal */}
         <div className="col-span-12 md:col-span-9 space-y-6">
           {currentView === 'dashboard' && (
             <>
@@ -230,7 +228,6 @@ const App = () => {
             </>
           )}
 
-          {/* Resto de las vistas igual que antes (pacientes, calendario, etc.) */}
           {currentView === 'pacientes' && (
             <>
               <div className="flex justify-between items-center mb-4">
@@ -282,7 +279,6 @@ const App = () => {
             </>
           )}
 
-
           {currentView === 'calendario' && (
             <CalendarView
               citas={citas}
@@ -299,12 +295,6 @@ const App = () => {
           {currentView === 'configuracion' && isAdmin && <UserManager />}
           {currentView === 'asistente' && <AssistantView />}
         </div>
-        <div className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow transition-transform z-50 transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0`}>
-          {/* menú lateral */}
-        </div>
-
       </div>
     </div>
   );
