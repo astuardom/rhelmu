@@ -31,10 +31,6 @@ const PacienteSchema = new mongoose.Schema({
   edad: Number,
   correo: String,
   telefono: String,
-
-  tieneConvenio: { type: Boolean, default: false },
-  promocionDescuento: { type: String, default: '' },
-
   historial: [HistorialItemSchema],
   odontograma: [ToothSchema],
   fichaOrtodoncia: {
@@ -43,7 +39,9 @@ const PacienteSchema = new mongoose.Schema({
     duracion: String,
     controles: [String]
   },
-  controles: [YearControlSchema]
+  controles: [YearControlSchema],
+  tieneConvenio: { type: Boolean, default: false },
+  promocionDescuento: { type: String, default: '' }
 });
 
 module.exports = mongoose.model('Paciente', PacienteSchema);
