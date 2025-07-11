@@ -58,30 +58,31 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
 
   const handleControlUpdate = async (updatedControles) => {
     try {
+      if (!Array.isArray(updatedControles)) {
+        throw new Error("Los controles enviados no son válidos");
+      }
+  
       const res = await fetch(`${API_URL}/api/pacientes/${patient._id}/controles`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ controles: updatedControles })
       });
   
-      if (!res.ok) throw new Error('Error al actualizar controles');
+      if (!res.ok) {
+        const errorResponse = await res.json();
+        throw new Error(errorResponse?.error || 'Error al actualizar controles');
+      }
   
       const updated = await res.json();
-  
-      // ✅ Refresca el paciente actualizado directamente
       window.dispatchEvent(new CustomEvent("actualizarPaciente", { detail: updated }));
   
-      // ✅ Actualiza el estado seleccionado localmente
-      setSelectedPatient(updated);
-  
-      // ✅ Opcional: feedback visual
       alert("✅ Controles guardados correctamente");
-  
     } catch (err) {
       console.error('❌ Error actualizando controles:', err);
-      alert("❌ Error al guardar los controles");
+      alert("❌ Error al guardar controles: " + err.message);
     }
   };
+  
   
 
   const handleOdontogramaUpdate = async (updatedOdontograma) => {
