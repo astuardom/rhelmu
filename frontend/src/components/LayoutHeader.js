@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LayoutHeader = ({ nombreUsuario = 'Usuario', onLogout }) => {
+const LayoutHeader = ({ nombreUsuario = 'Usuario', onLogout, onToggleMenu }) => {
   const iniciales = nombreUsuario
     .split(' ')
     .map((n) => n[0])
@@ -12,6 +12,14 @@ const LayoutHeader = ({ nombreUsuario = 'Usuario', onLogout }) => {
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
         <div className="flex items-center space-x-4">
+          {/* Botón hamburguesa solo visible en móviles */}
+          <button
+            onClick={onToggleMenu}
+            className="block md:hidden text-2xl text-gray-600 focus:outline-none"
+          >
+            ☰
+          </button>
+
           <div className="h-14 w-auto">
             <img
               src="/logo-rhelmu.png"
@@ -19,8 +27,6 @@ const LayoutHeader = ({ nombreUsuario = 'Usuario', onLogout }) => {
               className="h-full object-contain"
             />
           </div>
-          <h1 className="text-xl font-bold text-indigo-800">
-          </h1>
         </div>
 
         <div className="flex items-center space-x-3">

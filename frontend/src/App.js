@@ -16,6 +16,9 @@ import Login from './components/Login';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+
 const App = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -296,6 +299,12 @@ const App = () => {
           {currentView === 'configuracion' && isAdmin && <UserManager />}
           {currentView === 'asistente' && <AssistantView />}
         </div>
+        <div className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow transition-transform z-50 transform ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0`}>
+          {/* menú lateral */}
+        </div>
+
       </div>
     </div>
   );
