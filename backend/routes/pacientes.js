@@ -89,4 +89,17 @@ router.patch('/:id/ficha-ortodoncia', async (req, res) => {
   }
 });
 
+router.get('/:id/controles', async (req, res) => {
+  try {
+    const paciente = await Paciente.findById(req.params.id);
+    if (!paciente) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
+    res.status(200).json(paciente.controles || []);
+  } catch (err) {
+    console.error('❌ Error obteniendo controles:', err);
+    res.status(500).json({ error: 'Error interno al obtener controles' });
+  }
+});
+
 module.exports = router;
