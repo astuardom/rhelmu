@@ -63,13 +63,26 @@ const PatientDetailView = ({ patient, onUpdateHistorial }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ controles: updatedControles })
       });
+  
       if (!res.ok) throw new Error('Error al actualizar controles');
+  
       const updated = await res.json();
+  
+      // ✅ Refresca el paciente actualizado directamente
       window.dispatchEvent(new CustomEvent("actualizarPaciente", { detail: updated }));
+  
+      // ✅ Actualiza el estado seleccionado localmente
+      setSelectedPatient(updated);
+  
+      // ✅ Opcional: feedback visual
+      alert("✅ Controles guardados correctamente");
+  
     } catch (err) {
       console.error('❌ Error actualizando controles:', err);
+      alert("❌ Error al guardar los controles");
     }
   };
+  
 
   const handleOdontogramaUpdate = async (updatedOdontograma) => {
     try {
