@@ -54,6 +54,36 @@ const TreatmentManager = () => {
     });
   };
 
+  const handleUpdate = async (id, nombre, precio) => {
+    try {
+      const res = await fetch(`${API_URL}/api/tratamientos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, precio })
+      });
+      const updated = await res.json();
+      setTratamientos(prev => prev.map(t => (t._id === id ? updated : t)));
+      alert("✅ Tratamiento actualizado");
+    } catch (err) {
+      alert("❌ Error al actualizar tratamiento");
+    }
+  };
+  
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Seguro que deseas eliminar este tratamiento?")) return;
+  
+    try {
+      await fetch(`${API_URL}/api/tratamientos/${id}`, {
+        method: "DELETE"
+      });
+      setTratamientos(prev => prev.filter(t => t._id !== id));
+      alert("🗑️ Tratamiento eliminado");
+    } catch (err) {
+      alert("❌ Error al eliminar tratamiento");
+    }
+  };
+ 
+
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <h2 className="text-xl font-bold mb-4 text-indigo-800">Gestión de Tratamientos</h2>
@@ -71,12 +101,55 @@ const TreatmentManager = () => {
           </tr>
         </thead>
         <tbody>
-          {tratamientos.map((t, i) => (
-            <tr key={i} className="border-t">
-              <td className="p-2">{t.nombre}</td>
-              <td className="p-2">${t.precio.toLocaleString('es-CL')}</td>
-            </tr>
-          ))}
+        {tratamientos.map((t, i) => (
+  <tr key={t._id || i} className="border-t">
+    <td className="p-2">
+      <input
+        type="text"
+        value={t.nombre}
+        onChange={(e) => {
+          const nombre = e.target.value;
+          setTratamientos(prev => {
+            const copia = [...prev];
+            copia[i].nombre = nombre;
+            return copia;
+          });
+        }}
+        className="border px-2 py-1 rounded w-full"
+      />
+    </td>
+    <td className="p-2">
+      <input
+        type="number"
+        value={t.precio}
+        onChange={(e) => {
+          const precio = parseInt(e.target.value);
+          setTratamientos(prev => {
+            const copia = [...prev];
+            copia[i].precio = precio;
+            return copia;
+          });
+        }}
+              className="border px-2 py-1 rounded w-full"
+            />
+          </td>
+          <td className="p-2 flex gap-2">
+            <button
+              onClick={() => handleUpdate(t._id, t.nombre, t.precio)}
+              className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+            >
+              💾 Guardar
+            </button>
+            <button
+              onClick={() => handleDelete(t._id)}
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            >
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      ))}
+
         </tbody>
       </table>
     </div>

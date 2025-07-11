@@ -21,4 +21,25 @@ router.post('/import', async (req, res) => {
   }
 });
 
+// Actualizar un tratamiento por ID
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Tratamiento.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Eliminar un tratamiento por ID
+router.delete('/:id', async (req, res) => {
+  try {
+    await Tratamiento.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
