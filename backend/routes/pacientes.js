@@ -45,28 +45,32 @@ router.patch('/:id/controles', async (req, res) => {
       return res.status(400).json({ error: 'Formato inválido: controles debe ser un arreglo' });
     }
 
-    for (const control of controles) {
+    // Validar que cada año tenga meses válidos
+    for (const yearBlock of controles) {
       if (
-        typeof control.year !== 'number' ||
-        !Array.isArray(control.months) ||
-        control.months.some(m => typeof m.month !== 'string' || typeof m.attended !== 'boolean')
+        typeof yearBlock.year !== 'number' ||
+        !Array.isArray(yearBlock.months) ||
+        yearBlock.months.some(m => typeof m.month !== 'string' || typeof m.attended !== 'boolean')
       ) {
-        return res.status(400).json({ error: 'Estructura de controles inválida' });
+        return res.status(400).json({ error: 'Formato inválido en la estructura de controles' });
       }
     }
 
     const paciente = await Paciente.findById(req.params.id);
-    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
+    if (!paciente) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
 
     paciente.controles = controles;
-    await paciente.save();
+    const saved = await paciente.save();
 
-    res.status(200).json(paciente);
+    res.status(200).json(saved);
   } catch (err) {
-    console.error('❌ Error interno en PATCH /controles:', err);
+    console.error('❌ Error en PATCH /pacientes/:id/controles:', err.message);
     res.status(500).json({ error: 'Error interno al actualizar controles' });
   }
 });
+
 
 
 
