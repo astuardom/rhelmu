@@ -20,11 +20,12 @@ const ControlChecklist = ({ controles = [], onUpdate }) => {
         }
       ];
       setLocalControles(newControles);
-      onUpdate(newControles);
+      // ❌ Elimina esto: onUpdate(newControles);
     } else {
       setLocalControles(controles);
     }
-  }, [controles, onUpdate, currentYear]);
+  }, [controles, currentYear]);
+  
 
   const toggleCheck = async (year, monthName) => {
     const updated = localControles.map(control => {
