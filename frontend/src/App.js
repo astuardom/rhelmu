@@ -141,54 +141,40 @@ const App = () => {
     }
   };
 
+  const SidebarItem = ({ icon, label, onClick, textColor = "text-indigo-700", bgHover = "hover:bg-indigo-100" }) => (
+    <button
+      onClick={() => { onClick(); setShowMobileMenu(false); }}
+      className={`w-full text-left px-4 py-3 rounded-lg ${bgHover} flex items-center space-x-3 transition duration-150 ${textColor}`}
+    >
+      <span className="text-xl">{icon}</span>
+      <span className="text-base font-medium">{label}</span>
+    </button>
+  );
+
   const renderSidebar = () => (
     <div className="space-y-2 text-sm">
-      <button
-        onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }}
-        className="w-full text-left px-4 py-3 rounded-lg hover:bg-indigo-100 flex items-center space-x-3 transition duration-150"
-      >
-        <span className="text-xl">📊</span>
-        <span className="text-base text-indigo-700 font-medium">Dashboard</span>
-      </button>
+      <SidebarItem icon="📊" label="Dashboard" onClick={() => setCurrentView('dashboard')} />
 
       {(isAdmin || isDoctorOrContador || isAsistente) && (
         <>
-          <button onClick={() => { setCurrentView('pacientes'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-            <span className="text-xl">🧑‍⚕️</span>
-            <span className="hidden md:inline">Pacientes</span>
-          </button>
-          <button onClick={() => { setCurrentView('calendario'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-            <span className="text-xl">📅</span>
-            <span className="hidden md:inline">Calendario</span>
-          </button>
+          <SidebarItem icon="🧑‍⚕️" label="Pacientes" onClick={() => setCurrentView('pacientes')} />
+          <SidebarItem icon="📅" label="Calendario" onClick={() => setCurrentView('calendario')} />
         </>
       )}
+
       {(isAdmin || isDoctorOrContador) && (
         <>
-          <button onClick={() => { setCurrentView('presupuestos'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-            <span className="text-xl">💰</span>
-            <span className="hidden md:inline">Presupuestos</span>
-          </button>
-          <button onClick={() => { setCurrentView('inventario'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-            <span className="text-xl">📦</span>
-            <span className="hidden md:inline">Inventario</span>
-          </button>
-          <button onClick={() => { setCurrentView('reportes'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-            <span className="text-xl">📈</span>
-            <span className="hidden md:inline">Reportes</span>
-          </button>
+          <SidebarItem icon="💰" label="Presupuestos" onClick={() => setCurrentView('presupuestos')} />
+          <SidebarItem icon="📦" label="Inventario" onClick={() => setCurrentView('inventario')} />
+          <SidebarItem icon="📈" label="Reportes" onClick={() => setCurrentView('reportes')} />
         </>
       )}
+
       {isAdmin && (
-        <button onClick={() => { setCurrentView('configuracion'); setShowMobileMenu(false); }} className="w-full text-left px-4 py-2 rounded-lg hover:bg-indigo-100 flex items-center space-x-2">
-          <span className="text-xl">⚙️</span>
-          <span className="hidden md:inline">Configuración</span>
-        </button>
+        <SidebarItem icon="⚙️" label="Configuración" onClick={() => setCurrentView('configuracion')} />
       )}
-      <button onClick={logout} className="w-full text-left px-4 py-2 mt-2 rounded-lg text-red-500 hover:bg-red-100 flex items-center space-x-2">
-        <span className="text-xl">🚪</span>
-        <span className="hidden md:inline">Cerrar sesión</span>
-      </button>
+
+      <SidebarItem icon="🚪" label="Cerrar sesión" onClick={logout} textColor="text-red-500" bgHover="hover:bg-red-100" />
     </div>
   );
 
@@ -200,7 +186,6 @@ const App = () => {
         onToggleMenu={() => setShowMobileMenu(!showMobileMenu)}
       />
 
-      {/* Menú lateral móvil */}
       {showMobileMenu && (
         <div className="fixed inset-0 bg-white z-50 p-6 shadow-lg overflow-y-auto">
           <div className="flex justify-between items-center mb-6 border-b pb-2">
@@ -215,7 +200,6 @@ const App = () => {
               <span>✖</span> <span>Cerrar</span>
             </button>
           </div>
-
           <nav className="space-y-3">
             <div className="text-xs text-gray-400 uppercase tracking-wide">Navegación</div>
             {renderSidebar()}
@@ -223,9 +207,7 @@ const App = () => {
         </div>
       )}
 
-      {/* Layout con Sidebar y contenido */}
       <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
-        {/* Menú lateral desktop */}
         <div className="hidden md:block col-span-12 md:col-span-3">
           <div className="bg-white rounded-2xl shadow-md p-5 border border-indigo-100">
             <h2 className="font-bold mb-4 text-indigo-800 uppercase tracking-wide text-sm">Menú Principal</h2>
@@ -233,7 +215,6 @@ const App = () => {
           </div>
         </div>
 
-        {/* Contenido principal */}
         <div className="col-span-12 md:col-span-9 space-y-6">
           {currentView === 'dashboard' && (
             <>
