@@ -74,12 +74,13 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
   }, [budgetToEdit]);
   
 ///////////////////////////////////
-  const [newItem, setNewItem] = useState({
-    tratamiento: '',
-    cantidad: 1,
-    precio: 0,
-    diente: ''
-  });
+const [newItem, setNewItem] = useState({
+  tratamiento: '',
+  cantidad: 1,
+  precio: 0,
+  diente: '',
+  descuento: 0
+});
 
   const [guardado, setGuardado] = useState(false);
   const [tratamientosDisponibles, setTratamientosDisponibles] = useState([]);
@@ -119,10 +120,12 @@ const BudgetEditor = ({ initialPatient = {}, budgetToEdit, onSaveBudget, onAddBu
       alert("El precio debe ser mayor a cero");
       return;
     }
+    const subtotalSinDescuento = newItem.cantidad * newItem.precio;
+    const descuentoAplicado = subtotalSinDescuento * (newItem.descuento || 0) / 100;
 
     const itemWithSubtotal = {
       ...newItem,
-      subtotal: newItem.cantidad * (newItem.precio - (newItem.descuento || 0))
+      subtotal: subtotalSinDescuento - descuentoAplicado
     };
 
     setBudget(prev => ({
