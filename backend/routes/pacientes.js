@@ -41,20 +41,25 @@ router.patch('/:id/controles', async (req, res) => {
   try {
     const { controles } = req.body;
 
+    // Validación de formato
     if (!Array.isArray(controles)) {
-      return res.status(400).json({ error: 'Formato inválido de controles' });
+      return res.status(400).json({ error: 'Formato inválido: controles debe ser un arreglo' });
     }
 
+    // Buscar paciente
     const paciente = await Paciente.findById(req.params.id);
-    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
+    if (!paciente) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
 
+    // Asignar y guardar
     paciente.controles = controles;
     await paciente.save();
 
-    res.json(paciente);
+    res.status(200).json(paciente);
   } catch (err) {
-    console.error('❌ Error actualizando controles:', err);
-    res.status(500).json({ error: 'Error al actualizar controles' });
+    console.error('❌ Error en PATCH /pacientes/:id/controles:', err);
+    res.status(500).json({ error: 'Error interno al actualizar controles' });
   }
 });
 
