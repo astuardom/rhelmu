@@ -21,5 +21,4 @@ router.post('/import', async (req, res) => {
   }
 });
 
-
 module.exports = router;
