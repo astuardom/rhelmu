@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AppointmentModal = ({ open, onClose, onSave, appointment, pacientes, setAppointment }) => {
+const AppointmentModal = ({ open, onClose, onSave, appointment, setAppointment }) => {
   if (!open) return null;
 
   const handleChange = (e) => {
@@ -9,7 +9,7 @@ const AppointmentModal = ({ open, onClose, onSave, appointment, pacientes, setAp
   };
 
   const handleSubmit = () => {
-    if (appointment.pacienteId && appointment.fecha && appointment.hora) {
+    if (appointment.paciente && appointment.fecha && appointment.hora) {
       onSave();
     } else {
       alert("⚠️ Completa todos los campos obligatorios.");
@@ -26,19 +26,13 @@ const AppointmentModal = ({ open, onClose, onSave, appointment, pacientes, setAp
         <div className="space-y-3">
           <label className="block">
             <span className="text-sm font-medium text-gray-700">Paciente</span>
-            <select
-              name="pacienteId"
-              value={appointment.pacienteId}
+            <input
+              name="paciente"
+              value={appointment.paciente || ''}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-            >
-              <option value="">Seleccionar Paciente</option>
-              {pacientes.map(p => (
-                <option key={p._id} value={p._id}>
-                  {p.nombre} {p.apellido}
-                </option>
-              ))}
-            </select>
+              placeholder="Nombre del paciente"
+            />
           </label>
 
           <label className="block">
