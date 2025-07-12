@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import WeeklyCalendar from './WeeklyCalendar';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Colores por estado (fondo y texto fijo)
 const estadoColors = {
   pendiente: 'bg-yellow-100 text-yellow-800',
   confirmada: 'bg-blue-100 text-blue-800',
@@ -10,7 +10,6 @@ const estadoColors = {
   cancelada: 'bg-red-100 text-red-800',
 };
 
-// Bordes por estado
 const getBorderClass = (estado) => {
   switch (estado) {
     case 'pendiente': return 'border-yellow-400';
@@ -20,7 +19,6 @@ const getBorderClass = (estado) => {
     default: return 'border-gray-300';
   }
 };
-
 
 const CalendarView = ({
   citas = [],
@@ -110,55 +108,10 @@ const CalendarView = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 text-sm text-center mb-2 font-medium text-indigo-600">
-        {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(d => <div key={d}>{d}</div>)}
-      </div>
-
-      <div className="grid grid-cols-7 gap-1">
-        {[...Array(startDay).fill(null), ...Array(daysInMonth).fill(0).map((_, i) => i + 1)].map((day, index) => {
-          const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day || 1);
-          const citasDia = getCitasForDate(date);
-          const isToday = date.toDateString() === today.toDateString();
-
-          return (
-            <div
-              key={index}
-              className={`p-2 border rounded-lg ${day ? 'cursor-pointer hover:bg-indigo-50' : 'opacity-0'}`}
-              onClick={() => day && openModalForNew(date)}
-            >
-              {day && (
-                <>
-                  <div className={`text-xs font-bold ${isToday ? 'text-blue-600' : ''}`}>{day}</div>
-                  {citasDia.length > 0 && (
-                    <div className="mt-1 space-y-1">
-                      {citasDia.slice(0, 3).map((cita) => (
-                        <div
-                          key={cita._id || cita.id}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openModalForEdit(cita);
-                          }}
-                          className={`text-[10px] px-1 py-1 rounded border cursor-pointer
-                            ${estadoColors[cita.estado] || 'bg-gray-100 text-gray-800'}
-                            ${getBorderClass(cita.estado)}`}
-                
-                        >
-                          <div className="text-[10px] font-semibold truncate">{getPacienteNombre(cita.pacienteId)}</div>
-                          <div className="text-[10px] text-gray-700">{cita.hora}</div>
-
-                        </div>
-                      ))}
-                      {citasDia.length > 3 && (
-                        <div className="text-[10px] text-gray-400">+{citasDia.length - 3} más</div>
-                      )}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      <WeeklyCalendar
+        citas={citas}
+        onSelectSlot={(fecha) => openModalForNew(new Date(fecha))}
+      />
 
       {showModal && !readOnly && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
