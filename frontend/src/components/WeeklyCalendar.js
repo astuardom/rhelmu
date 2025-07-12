@@ -11,18 +11,20 @@ const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
 const WeeklyCalendar = ({ weekStart, citas, pacientes, onOpenModal }) => {
   const getFecha = (diaOffset) => {
+    if (!(weekStart instanceof Date) || isNaN(weekStart)) return new Date(); // validación de seguridad
     const date = new Date(weekStart);
-    date.setDate(date.getDate() + diaOffset);
+    date.setDate(weekStart.getDate() + diaOffset);
     return date;
   };
 
   const getCitasPorDiaHora = (fecha, hora) => {
+    if (!(fecha instanceof Date) || isNaN(fecha)) return [];
     const fechaStr = fecha.toISOString().split('T')[0];
     return citas.filter(c => c.fecha === fechaStr && c.hora === hora);
   };
 
   return (
-    <div className="overflow-x-auto border rounded-xl shadow-sm">
+    <div className="overflow-x-auto border rounded-xl shadow-md">
       <table className="min-w-full table-fixed border-collapse">
         <thead className="bg-indigo-100">
           <tr>
@@ -48,7 +50,7 @@ const WeeklyCalendar = ({ weekStart, citas, pacientes, onOpenModal }) => {
                 return (
                   <td
                     key={colIndex}
-                    className="border border-gray-300 p-1 cursor-pointer hover:bg-indigo-50"
+                    className="border border-gray-300 p-1 cursor-pointer hover:bg-indigo-50 transition"
                     onClick={() => onOpenModal(fecha, hora)}
                   >
                     {citasBloque.map((cita, i) => (
