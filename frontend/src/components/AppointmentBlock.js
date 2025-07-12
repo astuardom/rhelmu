@@ -12,11 +12,11 @@ const AppointmentBlock = ({ paciente, horaInicio, horaFin, estado, onClick }) =>
 
   return (
     <div
-      className={`rounded px-2 py-1 text-xs font-medium text-white cursor-pointer ${color}`}
+      className={`rounded-lg px-2 py-1 text-xs font-medium text-white cursor-pointer shadow-sm hover:opacity-90 transition ${color}`}
       onClick={onClick}
     >
       <div className="truncate">{paciente}</div>
-      <div className="text-[10px]">{horaInicio} - {horaFin}</div>
+      <div className="text-[10px] font-light">{horaInicio} - {horaFin}</div>
     </div>
   );
 };

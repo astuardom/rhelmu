@@ -22,31 +22,28 @@ const SidePanel = ({
     });
 
   return (
-    <div className="bg-white border rounded-xl shadow p-4 w-full md:w-64">
+    <div className="bg-white border rounded-xl shadow p-4 w-full md:w-72 animate-fade-in">
       <h3 className="text-indigo-800 font-bold text-lg mb-4">📌 Panel de Control</h3>
 
-      {/* Selector de semana/mes */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Ver por:</label>
         <select
           onChange={(e) => onPeriodoChange(e.target.value)}
-          className="w-full border rounded px-3 py-2 text-sm"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:border-indigo-500"
         >
           <option value="semana">Semana actual</option>
           <option value="mes">Mes completo</option>
         </select>
       </div>
 
-      {/* Botón para bloquear fechas */}
       <button
         onClick={onBloquearFechas}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-6 w-full text-sm font-semibold"
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full text-sm font-semibold transition"
       >
         🔒 Bloquear Fechas
       </button>
 
-      {/* Lista de citas del día */}
-      <div>
+      <div className="mt-6">
         <h4 className="text-sm font-semibold text-gray-600 mb-2">
           Citas para: <br /><span className="text-indigo-600">{formatearFecha(fechaActual)}</span>
         </h4>
@@ -55,11 +52,11 @@ const SidePanel = ({
         ) : (
           <ul className="divide-y text-sm">
             {citasDelDia.map((cita, index) => (
-              <li key={index} className="py-1">
+              <li key={index} className="py-2">
                 <span className={`block font-medium ${estadoColor[cita.estado] || 'text-gray-600'}`}>
                   {cita.estado.charAt(0).toUpperCase() + cita.estado.slice(1)}
                 </span>
-                <span className="text-gray-700">
+                <span className="text-gray-700 text-xs">
                   {cita.nombrePaciente || 'Paciente'} - {cita.hora}
                 </span>
               </li>
