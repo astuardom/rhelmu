@@ -1,22 +1,22 @@
 import React from 'react';
 
 const estadoColors = {
-  pendiente: 'bg-yellow-500',
+  pendiente: 'bg-yellow-400',
   confirmada: 'bg-blue-500',
   completada: 'bg-green-500',
-  cancelada: 'bg-red-500',
+  cancelada: 'bg-red-400'
 };
 
-const AppointmentBlock = ({ paciente, horaInicio, horaFin, estado, onClick }) => {
-  const color = estadoColors[estado] || 'bg-gray-400';
+const AppointmentBlock = ({ cita, paciente, hora }) => {
+  const color = estadoColors[cita.estado] || 'bg-gray-400';
 
   return (
     <div
-      className={`rounded-lg px-2 py-1 text-xs font-medium text-white cursor-pointer shadow-sm hover:opacity-90 transition ${color}`}
-      onClick={onClick}
+      className={`rounded-md px-2 py-1 text-xs font-semibold text-white shadow-sm cursor-pointer ${color} truncate`}
+      title={`${paciente?.nombre || 'Paciente'} | ${cita.motivo}`}
     >
-      <div className="truncate">{paciente}</div>
-      <div className="text-[10px] font-light">{horaInicio} - {horaFin}</div>
+      <div className="truncate">{paciente?.nombre || 'Paciente'}</div>
+      <div className="text-[10px] font-normal">{hora}</div>
     </div>
   );
 };
