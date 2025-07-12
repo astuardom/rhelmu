@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Colores por estado
+// Colores por estado (para texto y fondo si deseas)
 const estadoColors = {
   pendiente: 'bg-yellow-200 text-yellow-800',
   confirmada: 'bg-blue-200 text-blue-800',
@@ -10,7 +10,18 @@ const estadoColors = {
   cancelada: 'bg-red-200 text-red-800',
 };
 
-// Colores alternativos aleatorios
+// Borde por estado
+const getBorderClass = (estado) => {
+  switch (estado) {
+    case 'pendiente': return 'border-yellow-400';
+    case 'confirmada': return 'border-blue-400';
+    case 'completada': return 'border-green-400';
+    case 'cancelada': return 'border-red-400';
+    default: return 'border-gray-300';
+  }
+};
+
+// Colores de fondo aleatorio
 const getRandomColor = (id) => {
   const colors = ['bg-pink-100', 'bg-purple-100', 'bg-indigo-100', 'bg-orange-100', 'bg-teal-100'];
   const index = id ? id.toString().charCodeAt(0) % colors.length : 0;
@@ -133,7 +144,7 @@ const CalendarView = ({
                             e.stopPropagation();
                             openModalForEdit(cita);
                           }}
-                          className={`text-[10px] truncate px-1 py-0.5 rounded ${getRandomColor(cita._id)} ${estadoColors[cita.estado] || ''}`}
+                          className={`text-[10px] truncate px-1 py-0.5 rounded border ${getBorderClass(cita.estado)} ${getRandomColor(cita._id)}`}
                         >
                           {getPacienteNombre(cita.pacienteId)} ({cita.hora})
                         </div>
@@ -151,76 +162,74 @@ const CalendarView = ({
       </div>
 
       {showModal && !readOnly && (
-  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h3 className="text-lg font-semibold mb-4">
-        {isEditing ? 'Editar Cita' : `Nueva Cita - ${selectedDate.toLocaleDateString('es-ES')}`}
-      </h3>
-      <div className="space-y-3">
-        <select
-          name="pacienteId"
-          value={newAppointment.pacienteId}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-        >
-          <option value="">Seleccionar Paciente</option>
-          {pacientes.map(p => (
-            <option key={p._id} value={p._id}>
-              {p.nombre} {p.apellido}
-            </option>
-          ))}
-        </select>
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">
+              {isEditing ? 'Editar Cita' : `Nueva Cita - ${selectedDate.toLocaleDateString('es-ES')}`}
+            </h3>
+            <div className="space-y-3">
+              <select
+                name="pacienteId"
+                value={newAppointment.pacienteId}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              >
+                <option value="">Seleccionar Paciente</option>
+                {pacientes.map(p => (
+                  <option key={p._id} value={p._id}>
+                    {p.nombre} {p.apellido}
+                  </option>
+                ))}
+              </select>
 
-        <input
-          name="motivo"
-          placeholder="Motivo"
-          value={newAppointment.motivo}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-        />
+              <input
+                name="motivo"
+                placeholder="Motivo"
+                value={newAppointment.motivo}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
 
-        {/* Nuevo campo para modificar la fecha */}
-        <input
-          name="fecha"
-          type="date"
-          value={newAppointment.fecha}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-        />
+              <input
+                name="fecha"
+                type="date"
+                value={newAppointment.fecha}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
 
-        <input
-          name="hora"
-          type="time"
-          value={newAppointment.hora}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-        />
+              <input
+                name="hora"
+                type="time"
+                value={newAppointment.hora}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
 
-        <select
-          name="estado"
-          value={newAppointment.estado}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-        >
-          <option value="pendiente">Pendiente</option>
-          <option value="confirmada">Confirmada</option>
-          <option value="completada">Completada</option>
-          <option value="cancelada">Cancelada</option>
-        </select>
+              <select
+                name="estado"
+                value={newAppointment.estado}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              >
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="completada">Completada</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
 
-        <div className="flex justify-end space-x-2 pt-3">
-          <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">
-            Cancelar
-          </button>
-          <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 text-white rounded">
-            {isEditing ? 'Guardar Cambios' : 'Guardar'}
-          </button>
+              <div className="flex justify-end space-x-2 pt-3">
+                <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">
+                  Cancelar
+                </button>
+                <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 text-white rounded">
+                  {isEditing ? 'Guardar Cambios' : 'Guardar'}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 };
