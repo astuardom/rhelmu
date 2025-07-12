@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Colores por estado (para texto y fondo si deseas)
+// Colores por estado (fondo y texto fijo)
 const estadoColors = {
-  pendiente: 'bg-yellow-200 text-yellow-800',
-  confirmada: 'bg-blue-200 text-blue-800',
-  completada: 'bg-green-200 text-green-800',
-  cancelada: 'bg-red-200 text-red-800',
+  pendiente: 'bg-yellow-100 text-yellow-800',
+  confirmada: 'bg-blue-100 text-blue-800',
+  completada: 'bg-green-100 text-green-800',
+  cancelada: 'bg-red-100 text-red-800',
 };
 
-// Borde por estado
+// Bordes por estado
 const getBorderClass = (estado) => {
   switch (estado) {
     case 'pendiente': return 'border-yellow-400';
@@ -21,12 +21,6 @@ const getBorderClass = (estado) => {
   }
 };
 
-// Colores de fondo aleatorio
-const getRandomColor = (id) => {
-  const colors = ['bg-pink-100', 'bg-purple-100', 'bg-indigo-100', 'bg-orange-100', 'bg-teal-100'];
-  const index = id ? id.toString().charCodeAt(0) % colors.length : 0;
-  return colors[index];
-};
 
 const CalendarView = ({
   citas = [],
@@ -146,7 +140,9 @@ const CalendarView = ({
                           }}
                           className={`text-[10px] truncate px-1 py-0.5 rounded border ${getBorderClass(cita.estado)} ${getRandomColor(cita._id)}`}
                         >
-                          {getPacienteNombre(cita.pacienteId)} ({cita.hora})
+                          <div className="text-[10px] font-semibold truncate">{getPacienteNombre(cita.pacienteId)}</div>
+                          <div className="text-[10px] text-gray-700">{cita.hora}</div>
+
                         </div>
                       ))}
                       {citasDia.length > 3 && (
