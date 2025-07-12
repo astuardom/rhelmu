@@ -138,7 +138,10 @@ const CalendarView = ({
                             e.stopPropagation();
                             openModalForEdit(cita);
                           }}
-                          className={`text-[10px] truncate px-1 py-0.5 rounded border ${getBorderClass(cita.estado)} ${getRandomColor(cita._id)}`}
+                          className={`text-[10px] px-1 py-1 rounded border cursor-pointer
+                            ${estadoColors[cita.estado] || 'bg-gray-100 text-gray-800'}
+                            ${getBorderClass(cita.estado)}`}
+                
                         >
                           <div className="text-[10px] font-semibold truncate">{getPacienteNombre(cita.pacienteId)}</div>
                           <div className="text-[10px] text-gray-700">{cita.hora}</div>
