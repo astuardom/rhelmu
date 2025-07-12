@@ -9,22 +9,20 @@ const horas = [
 
 const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
-const WeeklyCalendar = ({ weekStart, citas, pacientes, onOpenModal }) => {
+const WeeklyCalendar = ({ currentDate, citas, pacientes, onSelectSlot, onEditCita }) => {
   const getFecha = (diaOffset) => {
-    if (!(weekStart instanceof Date) || isNaN(weekStart)) return new Date(); // validación de seguridad
-    const date = new Date(weekStart);
-    date.setDate(weekStart.getDate() + diaOffset);
+    const date = new Date(currentDate);
+    date.setDate(currentDate.getDate() - currentDate.getDay() + 1 + diaOffset); // Lunes como inicio
     return date;
   };
 
   const getCitasPorDiaHora = (fecha, hora) => {
-    if (!(fecha instanceof Date) || isNaN(fecha)) return [];
     const fechaStr = fecha.toISOString().split('T')[0];
     return citas.filter(c => c.fecha === fechaStr && c.hora === hora);
   };
 
   return (
-    <div className="overflow-x-auto border rounded-xl shadow-md">
+    <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
       <table className="min-w-full table-fixed border-collapse">
         <thead className="bg-indigo-100">
           <tr>
@@ -50,15 +48,16 @@ const WeeklyCalendar = ({ weekStart, citas, pacientes, onOpenModal }) => {
                 return (
                   <td
                     key={colIndex}
-                    className="border border-gray-300 p-1 cursor-pointer hover:bg-indigo-50 transition"
-                    onClick={() => onOpenModal(fecha, hora)}
+                    className="border border-gray-300 p-1 h-20 relative hover:bg-indigo-50 cursor-pointer"
+                    onClick={() => onSelectSlot(fecha, hora)}
                   >
                     {citasBloque.map((cita, i) => (
-                      <AppointmentBlock
-                        key={i}
-                        cita={cita}
-                        paciente={pacientes.find(p => p._id === cita.pacienteId)}
-                      />
+                      <div key={i} onClick={(e) => { e.stopPropagation(); onEditCita(cita); }}>
+                        <AppointmentBlock
+                          cita={cita}
+                          paciente={pacientes.find(p => p._id === cita.pacienteId)}
+                        />
+                      </div>
                     ))}
                   </td>
                 );

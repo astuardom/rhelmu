@@ -12,67 +12,97 @@ const AppointmentModal = ({ open, onClose, onSave, appointment, pacientes, setAp
     if (appointment.pacienteId && appointment.fecha && appointment.hora) {
       onSave();
     } else {
-      alert("Completa todos los campos obligatorios");
+      alert("⚠️ Completa todos los campos obligatorios.");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
-      <div className="bg-white w-full max-w-md rounded-lg shadow p-6 animate-fade-in">
-        <h3 className="text-lg font-semibold mb-4">{appointment._id ? 'Editar Cita' : 'Nueva Cita'}</h3>
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 animate-fade-in">
+        <h2 className="text-xl font-bold text-indigo-700 mb-4">
+          {appointment._id ? 'Editar Cita' : 'Nueva Cita'}
+        </h2>
+
         <div className="space-y-3">
-          <select
-            name="pacienteId"
-            value={appointment.pacienteId}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Paciente</span>
+            <select
+              name="pacienteId"
+              value={appointment.pacienteId}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option value="">Seleccionar Paciente</option>
+              {pacientes.map(p => (
+                <option key={p._id} value={p._id}>
+                  {p.nombre} {p.apellido}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Fecha</span>
+            <input
+              type="date"
+              name="fecha"
+              value={appointment.fecha}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Hora</span>
+            <input
+              type="time"
+              name="hora"
+              value={appointment.hora}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Motivo</span>
+            <input
+              name="motivo"
+              value={appointment.motivo}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+              placeholder="Motivo de la cita"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Estado</span>
+            <select
+              name="estado"
+              value={appointment.estado}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="completada">Completada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </label>
+        </div>
+
+        <div className="flex justify-end mt-6 space-x-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100"
           >
-            <option value="">Seleccionar Paciente</option>
-            {pacientes.map(p => (
-              <option key={p._id} value={p._id}>{p.nombre} {p.apellido}</option>
-            ))}
-          </select>
-
-          <input
-            type="date"
-            name="fecha"
-            value={appointment.fecha}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-
-          <input
-            type="time"
-            name="hora"
-            value={appointment.hora}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-
-          <input
-            name="motivo"
-            placeholder="Motivo"
-            value={appointment.motivo}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-
-          <select
-            name="estado"
-            value={appointment.estado}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            Cancelar
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
-            <option value="pendiente">Pendiente</option>
-            <option value="confirmada">Confirmada</option>
-            <option value="completada">Completada</option>
-            <option value="cancelada">Cancelada</option>
-          </select>
-
-          <div className="flex justify-end space-x-3 pt-4">
-            <button onClick={onClose} className="px-4 py-2 border rounded">Cancelar</button>
-            <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 text-white rounded">Guardar</button>
-          </div>
+            Guardar
+          </button>
         </div>
       </div>
     </div>

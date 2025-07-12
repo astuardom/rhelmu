@@ -14,11 +14,11 @@ const CalendarView = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [editingCita, setEditingCita] = useState(null);
+  const [appointmentData, setAppointmentData] = useState(null);
 
   const handleWeekChange = (direction) => {
     const newDate = new Date(currentDate);
-    newDate.setDate(newDate.getDate() + direction * 7);
+    newDate.setDate(currentDate.getDate() + direction * 7);
     setCurrentDate(newDate);
   };
 
@@ -26,37 +26,46 @@ const CalendarView = ({
     if (readOnly) return;
     setSelectedDay(day);
     setSelectedTime(time);
-    setEditingCita(null);
+    setAppointmentData({
+      pacienteId: '',
+      fecha: day.toISOString().split('T')[0],
+      hora: time,
+      motivo: '',
+      estado: 'pendiente',
+    });
     setModalOpen(true);
   };
 
   const handleEditCita = (cita) => {
     if (readOnly) return;
-    setEditingCita(cita);
-    const [year, month, day] = cita.fecha.split('-').map(Number);
-    setSelectedDay(new Date(year, month - 1, day));
+    const [y, m, d] = cita.fecha.split('-').map(Number);
+    const day = new Date(y, m - 1, d);
+    setSelectedDay(day);
     setSelectedTime(cita.hora);
+    setAppointmentData({ ...cita });
     setModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    setEditingCita(null);
+    setAppointmentData(null);
     setSelectedDay(null);
     setSelectedTime(null);
   };
 
-  const handleSaveCita = (cita) => {
-    if (editingCita) {
-      onEditAppointment({ ...cita, _id: editingCita._id });
+  const handleSaveCita = () => {
+    if (!appointmentData) return;
+    if (appointmentData._id) {
+      onEditAppointment(appointmentData);
     } else {
-      onAddAppointment(cita);
+      onAddAppointment(appointmentData);
     }
     handleCloseModal();
   };
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
+      {/* Panel lateral izquierdo */}
       <div className="w-full md:w-64">
         <SidePanel
           currentDate={currentDate}
@@ -67,25 +76,26 @@ const CalendarView = ({
         />
       </div>
 
-      <div className="flex-1">
+      {/* Calendario semanal */}
+      <div className="flex-1 overflow-x-auto">
         <WeeklyCalendar
-          currentDate={currentDate}
+          weekStart={currentDate}
           citas={citas}
           pacientes={pacientes}
-          onSelectSlot={handleSelectSlot}
+          onOpenModal={handleSelectSlot}
           onEditCita={handleEditCita}
         />
       </div>
 
+      {/* Modal para agregar o editar cita */}
       {modalOpen && (
         <AppointmentModal
-          isOpen={modalOpen}
+          open={modalOpen}
           onClose={handleCloseModal}
           onSave={handleSaveCita}
+          appointment={appointmentData}
           pacientes={pacientes}
-          defaultDate={selectedDay}
-          defaultTime={selectedTime}
-          initialData={editingCita}
+          setAppointment={setAppointmentData}
         />
       )}
     </div>
