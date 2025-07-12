@@ -75,7 +75,7 @@ const SidePanel = ({ currentDate, onWeekChange, citas = [], pacientes = [], onSe
               <span className={`text-xs font-semibold ${getColor(cita.estado)}`}>
                 {cita.hora} • {cita.estado}
               </span>
-              <span className="text-gray-800 text-sm truncate">{paciente?.nombre || 'Paciente'}</span>
+              <span className="text-gray-800 text-sm truncate">{cita.paciente || 'Paciente'}</span>
             </li>
           );
         })}

@@ -15,7 +15,7 @@ const AppointmentBlock = ({ cita, paciente }) => {
       className={`rounded-md px-2 py-1 text-xs font-semibold text-white shadow-sm cursor-pointer ${color} truncate`}
       title={`${paciente?.nombre || 'Paciente'} - ${cita.hora} | ${cita.motivo || ''}`}
     >
-      <div className="truncate">{paciente?.nombre || 'Paciente'}</div>
+      <div className="truncate">{cita.paciente || 'Paciente'}</div>
       <div className="text-[10px] font-normal">{cita.hora}</div>
     </div>
   );
