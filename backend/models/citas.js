@@ -11,10 +11,10 @@ const citaSchema = new mongoose.Schema({
     required: [true, 'La hora es obligatoria'],
     match: [/^\d{2}:\d{2}$/, 'Formato de hora inválido (HH:MM)']
   },
-  pacienteId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
-    required: [true, 'El paciente es obligatorio']
+  paciente: {
+    type: String,
+    required: [true, 'El nombre del paciente es obligatorio'],
+    trim: true
   },
   motivo: {
     type: String,
