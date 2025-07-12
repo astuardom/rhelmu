@@ -37,12 +37,16 @@ const CalendarView = ({ citas = [], pacientes = [], onAddAppointment = () => {},
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-12 md:col-span-3">
-        <SidePanel
-          citas={citas}
-          pacientes={pacientes}
-          weekStart={weekStart}
-          setWeekStart={setWeekStart}
-        />
+      <SidePanel
+        citas={citas}
+        pacientes={pacientes}
+        currentDate={weekStart}
+        onWeekChange={(offset) => {
+          const nuevaFecha = new Date(weekStart);
+          nuevaFecha.setDate(nuevaFecha.getDate() + offset * 7);
+          setWeekStart(nuevaFecha);
+        }}
+      />
       </div>
 
       <div className="col-span-12 md:col-span-9">
