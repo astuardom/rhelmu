@@ -18,10 +18,16 @@ const SidePanel = ({ currentDate, onWeekChange, citas = [], pacientes = [], onSe
 
   // Citas del día actual
   const citasHoy = citas.filter(cita => {
-    const [year, month, day] = cita.fecha.split('-');
-    const citaDate = new Date(Number(year), Number(month) - 1, Number(day));
+    if (!cita.fecha || typeof cita.fecha !== 'string') return false;
+  
+    const parts = cita.fecha.split('-');
+    if (parts.length !== 3) return false;
+  
+    const [year, month, day] = parts.map(Number);
+    const citaDate = new Date(year, month - 1, day);
     return citaDate.toDateString() === today.toDateString();
   });
+  
 
   const getColor = (estado) => {
     switch (estado) {
